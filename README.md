@@ -1,1 +1,1 @@
-<a href="https://ilkimonercan.github.io/songoracle/">https://ilkimonercan.github.io/songoracle/</a>
+https://ilkimonercan.github.io/songoracle/
