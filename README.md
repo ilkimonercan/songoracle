@@ -1,1 +1,1 @@
-[Akashic Oracle](https://ilkimonercan.github.io/songoracle/)
+<a href="https://ilkimonercan.github.io/songoracle/">https://ilkimonercan.github.io/songoracle/</a>
