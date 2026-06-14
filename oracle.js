@@ -1,0 +1,50 @@
+async function searchYT(s,a){const b=['https://inv.nadeko.net','https://invidious.snopyta.org','https://yewtu.be','https://inv.private.coffee'];for(const h of b){try{const r=await fetch(h+'/api/v1/search?q='+encodeURIComponent(a+' - '+s)+'&type=video&page=1');const d=await r.json();if(d&&d.length>0){for(const v of d){if(v.videoId){try{const vr=await fetch(h+'/api/v1/videos/'+v.videoId);if(vr.ok){const vd=await vr.json();if(vd&&!vd.error)return 'https://www.youtube.com/watch?v='+v.videoId}}catch(e){}}}}}catch(e){}}return null}
+
+function getListenUrl(song,artist){const id=YT[song+'|'+artist];return id?`https://www.youtube.com/watch?v=${id}`:'https://www.youtube.com/results?search_query='+encodeURIComponent(artist+' - '+song+' official video')}
+function openListen(song,artist){location.href='https://www.youtube.com/results?search_query='+encodeURIComponent(artist+' - '+song+' official video')}
+function getRandomInt(m,n){return Math.floor(Math.random()*(n-m+1))+m;}
+
+const oracleInput=document.getElementById('oracleInput');const oracleBtn=document.getElementById('oracleBtn');const oracleQuestion=document.getElementById('oracleQuestion');const oracleRitual=document.getElementById('oracleRitual');const oracleAnswer=document.getElementById('oracleAnswer');const oracleBrowse=document.getElementById('oracleBrowse');const answerLyric=document.getElementById('answerLyric');const answerSong=document.getElementById('answerSong');const answerArtist=document.getElementById('answerArtist');const askAgainBtn=document.getElementById('askAgainBtn');const shareBtn=document.getElementById('shareBtn');const listenBtn=document.getElementById('listenBtn');const browseBtn=document.getElementById('browseBtn');const browseSearch=document.getElementById('browseSearch');const browseGrid=document.getElementById('browseGrid');const browseNoResults=document.getElementById('browseNoResults');const browseCloseBtn=document.getElementById('browseCloseBtn');const oracleCard=document.getElementById('oracleCard');
+
+let currentEntry=null;
+
+function pickSong(query){const q=query.toLowerCase();const kw={love:["love","aşk","sevi","kalp","heart","romance"],sad:["sad","cry","ağla","üzgün"],hope:["hope","umut","faith","inan"],work:["work","iş","career","kariyer"],change:["change","değiş","move","should","new"],family:["family","aile","anne","baba","mother","father"]};let matched=null;for(const[tag,words]of Object.entries(kw)){if(words.some(w=>q.includes(w))){matched=tag;break;}}let pool=[...SONGS];if(matched){const tagged=pool.filter(e=>e.tags.includes(matched));if(tagged.length)pool=tagged;}return pool[Math.floor(Math.random()*pool.length)];}
+
+function createParticle(){const el=document.createElement('div');el.className='energy-particle';el.style.left=getRandomInt(5,95)+'%';el.style.top=getRandomInt(25,80)+'%';el.style.background=['#d4a84b','#8b5cf6','#f0d68a','#fff'][getRandomInt(0,3)];el.style.width=el.style.height=getRandomInt(2,5)+'px';el.style.animationDuration=getRandomInt(1000,3000)+'ms';document.body.appendChild(el);setTimeout(()=>el.remove(),3000);}
+
+function startRitual(){const q=oracleInput.value.trim();if(!q){oracleInput.style.borderColor='#ef4444';oracleInput.style.boxShadow='0 0 20px rgba(239,68,68,0.3)';setTimeout(()=>{oracleInput.style.borderColor='';oracleInput.style.boxShadow='';},1000);return;}
+
+currentEntry=pickSong(q);oracleQuestion.style.display='none';oracleRitual.style.display='block';oracleRitual.querySelectorAll('.ritual-text').forEach(el=>{el.style.animation='none';el.offsetHeight;el.style.animation='';});const bar=oracleRitual.querySelector('.ritual-bar-fill');bar.style.animation='none';bar.offsetHeight;bar.style.animation='barFill 5.5s ease forwards';let pCount=0;const pInterval=setInterval(()=>{createParticle();pCount++;if(pCount>25)clearInterval(pInterval);},250);
+
+setTimeout(()=>{clearInterval(pInterval);answerLyric.textContent=currentEntry.lyric;answerSong.textContent=currentEntry.song;answerArtist.textContent=currentEntry.artist;oracleRitual.style.display='none';oracleAnswer.style.display='block';for(let i=0;i<15;i++)setTimeout(()=>createParticle(),i*120);},6200);}
+
+function resetOracle(clearInput){oracleAnswer.style.display='none';oracleRitual.style.display='none';oracleBrowse.style.display='none';oracleQuestion.style.display='block';if(clearInput)oracleInput.value='';setTimeout(()=>oracleInput.focus(),100);}
+
+oracleBtn.addEventListener('click',startRitual);oracleInput.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();startRitual();}});askAgainBtn.addEventListener('click',()=>resetOracle(true));shareBtn.addEventListener('click',()=>{if(!currentEntry)return;const text=`🔮 Akashic Oracle says:\n\n"${currentEntry.lyric}"\n\n— ${currentEntry.artist}, ${currentEntry.song}\n\nFrom the Akashic Records`;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>{const orig=shareBtn.textContent;shareBtn.textContent='&#10022; Copied!';shareBtn.style.color='var(--gold)';setTimeout(()=>{shareBtn.textContent=orig;shareBtn.style.color='';},2000);});}else{alert(text);}});listenBtn.addEventListener('click',()=>{if(currentEntry)openListen(currentEntry.song,currentEntry.artist);});
+
+function renderBrowseList(filter){const q=(filter||'').toLowerCase();const songs=q?SONGS.filter(e=>e.song.toLowerCase().includes(q)||e.artist.toLowerCase().includes(q)||e.tags.some(t=>t.includes(q))):SONGS;if(songs.length){browseNoResults.style.display='none';browseGrid.innerHTML=songs.map(e=>`<div class="song-card" role="listitem"><div class="song-card-info"><div class="song-card-song">${e.song}</div><div class="song-card-artist">${e.artist}</div></div><button class="listen-btn" data-song="${e.song.replace(/"/g,'&quot;')}" data-artist="${e.artist.replace(/"/g,'&quot;')}" aria-label="Listen to ${e.song} by ${e.artist}">▶</button></div>`).join('');browseGrid.querySelectorAll('.listen-btn').forEach(btn=>btn.addEventListener('click',e=>{e.stopPropagation();openListen(btn.dataset.song,btn.dataset.artist);}));}else{browseGrid.innerHTML='';browseNoResults.style.display='block';}}
+
+browseBtn.addEventListener('click',()=>{oracleQuestion.style.display='none';oracleRitual.style.display='none';oracleAnswer.style.display='none';oracleBrowse.style.display='block';browseSearch.value='';renderBrowseList('');browseSearch.focus();});
+
+browseCloseBtn.addEventListener('click',()=>{oracleBrowse.style.display='none';oracleQuestion.style.display='block';});
+
+browseSearch.addEventListener('input',()=>renderBrowseList(browseSearch.value));
+
+oracleCard.addEventListener('mousemove',(e)=>{const r=oracleCard.getBoundingClientRect();oracleCard.style.setProperty('--mouse-x',((e.clientX-r.left)/r.width*100)+'%');oracleCard.style.setProperty('--mouse-y',((e.clientY-r.top)/r.height*100)+'%');
+
+});
+
+const testInner=document.getElementById('testimonialInner');const testDots=document.getElementById('testDots');const testPrev=document.getElementById('testPrev');const testNext=document.getElementById('testNext');let testIdx=0;const testTotal=testInner.children.length;
+
+function goToTest(idx){testIdx=((idx%testTotal)+testTotal)%testTotal;testInner.style.transform=`translateX(-${testIdx*100}%)`;testDots.querySelectorAll('.testimonial-dot').forEach((dot,i)=>{dot.classList.toggle('active',i===testIdx);dot.setAttribute('aria-selected',i===testIdx);});}
+
+testPrev.addEventListener('click',()=>goToTest(testIdx-1));testNext.addEventListener('click',()=>goToTest(testIdx+1));testDots.addEventListener('click',e=>{const dot=e.target.closest('.testimonial-dot');if(dot)goToTest(parseInt(dot.dataset.index));});testDots.querySelectorAll('.testimonial-dot').forEach(dot=>{dot.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){e.preventDefault();goToTest(testIdx+1);}if(e.key==='ArrowLeft'){e.preventDefault();goToTest(testIdx-1);}});});let testAuto=setInterval(()=>goToTest(testIdx+1),7000);document.querySelector('.testimonials-wrapper').addEventListener('mouseenter',()=>clearInterval(testAuto));document.querySelector('.testimonials-wrapper').addEventListener('mouseleave',()=>{testAuto=setInterval(()=>goToTest(testIdx+1),7000);});
+
+const contactForm=document.getElementById('contactForm');const formStatus=document.getElementById('formStatus');contactForm.addEventListener('submit',async(e)=>{e.preventDefault();const name=document.getElementById('formName').value.trim();const email=document.getElementById('formEmail').value.trim();const message=document.getElementById('formMessage').value.trim();if(!name||!email||!message){formStatus.textContent='Please fill in all fields.';formStatus.className='form-status error';return;}
+
+const submitBtn=contactForm.querySelector('.form-submit');const origText=submitBtn.textContent;submitBtn.textContent='&#10022; Sending…';submitBtn.disabled=true;try{const fd=new FormData(contactForm);const res=await fetch('https://api.web3forms.com/submit',{method:'POST',body:fd});const data=await res.json();if(data.success){formStatus.textContent='&#10022; Message sent! The Oracle will respond within a lunar cycle.';formStatus.className='form-status success';contactForm.reset();}else{formStatus.textContent='Something went wrong. Please try again later.';formStatus.className='form-status error';}}catch{formStatus.textContent='Network error. Please check your connection and try again.';formStatus.className='form-status error';}submitBtn.textContent=origText;submitBtn.disabled=false;});
+
+const revealObserver=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -50px 0px'});document.querySelectorAll('.section-header, .about-grid, .steps-grid, .oracle-card, .contact-grid, .testimonials-wrapper, .footer-grid').forEach(el=>{el.classList.add('reveal');revealObserver.observe(el);});
+
+document.querySelectorAll('.footer-bottom p:first-child').forEach(p=>{p.innerHTML=p.innerHTML.replace('2026',new Date().getFullYear());});console.log('🔮 Akashic Oracle v2.5 — The Universe Speaks Through Song');
+
