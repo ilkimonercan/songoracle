@@ -1,0 +1,34 @@
+let currentLang='en';const html=document.documentElement;const langBtn=document.getElementById('langBtn');
+
+function setLang(lang){currentLang=lang;const t=LANG[lang];html.setAttribute('lang',lang==='en'?'en':'tr');if(langBtn)langBtn.classList.toggle('active',lang==='tr');document.querySelectorAll('[data-i18n]').forEach(el=>{const key=el.getAttribute('data-i18n');if(t[key]){if(el.tagName==='META')el.setAttribute('content',t[key]);else if(el.tagName==='TITLE')el.textContent=t[key];else el.textContent=t[key];}});
+
+document.querySelectorAll('[data-i18n-attr]').forEach(el=>{const[attr,key]=el.getAttribute('data-i18n-attr').split(':');if(t[key])el.setAttribute(attr,t[key]);});
+
+if(langBtn){langBtn.innerHTML='<span class="lang-dot"></span> '+t.lang_btn;}}
+
+if(langBtn)langBtn.classList.toggle('active',currentLang==='tr');if(langBtn)langBtn.innerHTML='<span class="lang-dot"></span> TR';
+
+if(langBtn)langBtn.addEventListener('click',()=>setLang(currentLang==='en'?'tr':'en'));
+
+const themeBtn=document.getElementById('themeBtn');let darkMode=true;
+
+function toggleTheme(){darkMode=!darkMode;html.setAttribute('data-theme',darkMode?'dark':'light');if(themeBtn){const w=themeBtn.querySelector('.icon-wrap');if(w)w.textContent=darkMode?'🌙':'☀️';themeBtn.setAttribute('aria-pressed',String(!darkMode));}localStorage.setItem('akashic-theme',darkMode?'dark':'light');}
+
+const savedTheme=localStorage.getItem('akashic-theme');if(savedTheme==='light'){darkMode=false;html.setAttribute('data-theme','light');if(themeBtn){const w=themeBtn.querySelector('.icon-wrap');if(w)w.textContent='☀️';themeBtn.setAttribute('aria-pressed','true');}}
+
+if(themeBtn)themeBtn.addEventListener('click',toggleTheme);
+
+const c=document.getElementById('star-canvas');const ctx=c.getContext('2d');let W,H,stars=[],shootingStars=[];
+
+function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}resize();window.addEventListener('resize',resize);
+
+class Star{constructor(){this.reset(true);}reset(){this.x=Math.random()*W;this.y=Math.random()*H;this.size=Math.random()*1.8+0.3;this.baseA=Math.random()*0.7+0.2;this.a=this.baseA;this.spd=this.size*0.015+0.003;this.twSpd=Math.random()*0.02+0.005;this.twOff=Math.random()*Math.PI*2;}update(time){this.a=this.baseA*(0.6+0.4*Math.sin(time*this.twSpd+this.twOff));this.y+=this.spd;if(this.y>H){this.y=0;this.x=Math.random()*W;}}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${this.a})`;ctx.fill();}}
+
+class Shooter{constructor(){this.active=false;}fire(){this.active=true;this.x=Math.random()*W;this.y=Math.random()*H*0.3;this.spd=Math.random()*7+5;this.dx=Math.cos(Math.PI/4+Math.random()*0.4)*this.spd;this.dy=Math.sin(Math.PI/4+Math.random()*0.4)*this.spd;this.a=1;this.trail=[];}update(){if(!this.active)return;this.trail.push({x:this.x,y:this.y});if(this.trail.length>12)this.trail.shift();this.x+=this.dx;this.y+=this.dy;this.a-=0.01;if(this.a<=0||this.x>W+50||this.y>H+50)this.active=false;}draw(){if(!this.active)return;for(let i=0;i<this.trail.length;i++){const al=(i/this.trail.length)*this.a*0.5;ctx.beginPath();ctx.arc(this.trail[i].x,this.trail[i].y,1*(i/this.trail.length),0,Math.PI*2);ctx.fillStyle=`rgba(255,220,150,${al})`;ctx.fill();}ctx.beginPath();ctx.arc(this.x,this.y,2,0,Math.PI*2);ctx.fillStyle=`rgba(255,245,220,${this.a})`;ctx.fill();}}
+
+for(let i=0;i<250;i++)stars.push(new Star());for(let i=0;i<4;i++)shootingStars.push(new Shooter());let t=0,lastS=0;
+
+function drawStars(time){ctx.clearRect(0,0,W,H);t=time||0;const g1=ctx.createRadialGradient(W*0.25,H*0.35,0,W*0.25,H*0.35,W*0.5);g1.addColorStop(0,'rgba(139,92,246,0.02)');g1.addColorStop(0.5,'rgba(26,26,62,0.015)');g1.addColorStop(1,'transparent');ctx.fillStyle=g1;ctx.fillRect(0,0,W,H);const g2=ctx.createRadialGradient(W*0.75,H*0.6,0,W*0.75,H*0.6,W*0.4);g2.addColorStop(0,'rgba(212,168,75,0.015)');g2.addColorStop(1,'transparent');ctx.fillStyle=g2;ctx.fillRect(0,0,W,H);stars.forEach(s=>{s.update(t);s.draw();});if(t-lastS>3000+Math.random()*4000){const ss=shootingStars.find(s=>!s.active);if(ss){ss.fire();lastS=t;}}shootingStars.forEach(s=>{s.update();s.draw();});requestAnimationFrame(drawStars);}
+
+drawStars();
+
