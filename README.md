@@ -1,4 +1,5 @@
 # songoracle
+
 akashicsongoracle
 
-[Akashic Oracle](https://ilkimonercan.github.io/songoracle/)
+Site: https://ilkimonercan.github.io/songoracle/
