@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title data-i18n="site_title">Akashic Oracle — The Universe Speaks Through Song</title>
+<meta name="description" content="Consult the Akashic Records through song lyrics. Ask a question, receive wisdom from the cosmic library of every song ever sung." data-i18n="attr:content:meta_desc">
+<meta name="theme-color" content="#07060e">
+<link rel="canonical" href="https://songoracle.com/">
+<meta property="og:title" content="Akashic Oracle — The Universe Speaks Through Song" data-i18n="attr:content:og_title">
+<meta property="og:description" content="Consult the Akashic Records through song lyrics. The cosmic library of every song ever sung awaits your question." data-i18n="attr:content:og_desc">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://songoracle.com/">
+<meta property="og:locale" content="en_US">
+<meta property="og:site_name" content="Akashic Oracle">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Akashic Oracle" data-i18n="attr:content:tw_title">
+<meta name="twitter:description" content="The Universe Speaks Through Song" data-i18n="attr:content:tw_desc">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2307060e' stroke='%23d4a84b' stroke-width='2'/%3E%3Ccircle cx='25' cy='27' r='8' fill='%23d4a84b' opacity='0.3'/%3E%3Ccircle cx='28' cy='23' r='3.5' fill='%23f0d68a'/%3E%3Ccircle cx='28' cy='23' r='1.2' fill='%2307060e'/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2307060e' stroke='%23d4a84b' stroke-width='2'/%3E%3Ccircle cx='25' cy='27' r='8' fill='%23d4a84b' opacity='0.3'/%3E%3Ccircle cx='28' cy='23' r='3.5' fill='%23f0d68a'/%3E%3Ccircle cx='28' cy='23' r='1.2' fill='%2307060e'/%3E%3C/svg%3E">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,300;1,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+
+  <nav>
+
+    <a href="#" class="logo" aria-label="Akashic Oracle Home">
+
+      <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
+
+        <circle cx="14" cy="14" r="12" stroke="currentColor" stroke-width="1.5" opacity="0.4"/>
+
+        <circle cx="14" cy="14" r="5" fill="currentColor" opacity="0.15"/>
+
+        <circle cx="14" cy="14" r="3" fill="currentColor" opacity="0.3"/>
+
+      </svg>
+
+      Akashic Oracle
+
+    </a>
+
+    <div class="nav-controls">
+
+      <button class="lang-btn" id="langBtn" aria-label="Switch language"><span class="lang-dot"></span>TR</button>
+
+      <button class="theme-btn" id="themeBtn" aria-label="Toggle theme" aria-pressed="false"><span class="icon-wrap">🌙</span></button>
+
+    </div>
+
+  </nav>
+
+</header>
+
+<canvas id="star-canvas" aria-hidden="true"></canvas>
+
+<div class="grain-overlay" aria-hidden="true"></div>
+
+<main id="main-content">
+
+<div class="hero-sigil" role="img" aria-label="All-seeing eye symbol" style="margin-top:120px">
+
+  <svg class="eye-svg" viewBox="0 0 56 56" fill="none" aria-hidden="true">
+
+    <ellipse cx="28" cy="28" rx="22" ry="14" stroke="#d4a84b" stroke-width="1.5" opacity="0.4"/>
+
+    <circle cx="28" cy="28" r="10" fill="#d4a84b" opacity="0.15" stroke="#d4a84b" stroke-width="1"/>
+
+    <circle cx="28" cy="28" r="6" fill="#f0d68a" opacity="0.3"/>
+
+    <circle cx="28" cy="28" r="2.5" fill="#07060e"/>
+
+    <path d="M6 20 Q14 28 28 28 Q42 28 50 20" stroke="#d4a84b" stroke-width="1" fill="none" opacity="0.3"/>
+
+    <path d="M6 36 Q14 28 28 28 Q42 28 50 36" stroke="#d4a84b" stroke-width="1" fill="none" opacity="0.3"/>
+
+  </svg>
+
+</div>
+
+<div class="oracle-card" id="oracleCard">
+
+  <div id="oracleQuestion" class="oracle-phase">
+
+    <p class="oracle-label" data-i18n="oracle_label">&#10022; What Do You Seek? &#10022;</p>
+
+    <h3 class="oracle-title" data-i18n="oracle_title">Ask the Universe</h3>
+
+    <textarea class="oracle-input" id="oracleInput" data-i18n-attr="placeholder:oracle_placeholder" placeholder="Pour your heart into the void… Will I find love? What does my future hold? Should I take the leap?" aria-label="Your question for the Akashic Oracle" maxlength="300"></textarea>
+
+    <p class="oracle-hint" data-i18n="oracle_hint">Focus your energy. Be clear. The records hear everything.</p>
+
+    <div class="oracle-actions"><button class="btn-primary" id="oracleBtn" data-i18n="oracle_btn">&#10022; Read the Records</button><button class="btn-secondary" id="browseBtn" data-i18n="browse_btn">&#10022; Browse Records</button></div>
+
+  </div>
+
+  <div id="oracleRitual" class="oracle-phase" style="display:none">
+
+    <div class="ritual-container">
+
+      <div class="ritual-portal" role="img" aria-label="Spinning cosmic portal">
+
+        <div class="portal-ring"></div><div class="portal-ring"></div><div class="portal-ring"></div><div class="portal-ring"></div><div class="ritual-core"></div>
+
+      </div>
+
+      <p class="ritual-text" data-i18n="ritual_1">Tuning to the cosmic frequency…</p>
+
+      <p class="ritual-text" data-i18n="ritual_2">Searching the Akashic Records…</p>
+
+      <p class="ritual-text" data-i18n="ritual_3">The stars align with your question…</p>
+
+      <p class="ritual-text" data-i18n="ritual_4">The universe reveals its song…</p>
+
+      <div class="ritual-bar"><div class="ritual-bar-fill"></div></div>
+
+    </div>
+
+  </div>
+
+  <div id="oracleAnswer" class="oracle-phase" style="display:none">
+
+    <p class="oracle-label" data-i18n="answer_label">&#10022; The Oracle Speaks &#10022;</p>
+
+    <div class="answer-lyric" id="answerLyric"></div>
+
+    <div class="answer-attribution"><div class="answer-song" id="answerSong"></div><div class="answer-artist" id="answerArtist"></div></div>
+
+    <div class="answer-actions">
+
+      <button class="btn-primary" id="askAgainBtn" data-i18n="ask_again">&#10022; Ask Again</button>
+
+      <button class="btn-secondary" id="shareBtn" data-i18n="share_btn">⟐ Share</button>
+
+      <button class="btn-secondary" id="listenBtn" data-i18n="listen_btn">▶ Listen</button>
+
+    </div>
+
+  </div>
+
+  <div id="oracleBrowse" class="oracle-phase" style="display:none">
+
+    <div class="browser-header">
+
+      <p class="oracle-label" data-i18n="browse_title">Song Library</p>
+
+      <input type="text" id="browseSearch" class="browser-search" data-i18n-attr="placeholder:browse_search_placeholder" placeholder="Search by song, artist, or vibe…" aria-label="Search songs">
+
+    </div>
+
+    <div id="browseGrid" class="browser-grid" role="list" aria-live="polite"></div>
+
+    <p id="browseNoResults" class="browser-no-results" data-i18n="browse_no_results" style="display:none">No songs match your search. Try a different keyword.</p>
+
+    <div class="browser-actions">
+
+      <button class="btn-secondary" id="browseCloseBtn" data-i18n="browse_close">&#10022; Back to Oracle</button>
+
+    </div>
+
+  </div>
+
+</div>
+
+  <section id="about" class="section" aria-labelledby="about-title">
+
+    <div class="container">
+
+      <div class="about-grid">
+
+        <article class="about-article">
+
+          <h3 data-i18n="about_h1">The Akashic Records</h3>
+
+          <p data-i18n="about_p1">In metaphysical tradition, the Akashic Records are a cosmic compendium of all events, thoughts, words, emotions, and intent ever to have occurred. Every song ever composed — every lyric ever sung — is eternally inscribed in this ethereal archive.</p>
+
+          <p style="margin-top:16px" data-i18n="about_p2">The Akashic Oracle bridges the gap between this infinite library and your seeking heart. Ask a question, and the Records respond with the lyric that most resonates with your energy — a message from the universe, delivered through music.</p>
+
+        </article>
+
+        <aside class="about-aside">
+
+          <h3 data-i18n="about_h2">The Philosophy</h3>
+
+          <p data-i18n="about_p3">Music is the language of the soul. Every song carries a unique vibration — a frequency that speaks directly to our deepest selves. When you consult the Oracle, you are not receiving a random lyric but a harmonic resonance selected by the cosmos to answer your innermost question.</p>
+
+          <p style="margin-top:12px" data-i18n="about_p4">The answer was always there, woven into the fabric of existence. The Oracle simply helps you hear it.</p>
+
+        </aside>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section id="contact" class="section" aria-labelledby="contact-title">
+
+    <div class="container">
+
+      <div class="contact-grid">
+
+        <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST" aria-label="Contact form">
+
+          <p style="margin-bottom:20px;font-style:italic;opacity:0.8" data-i18n="form_intro">If you really must contact us, you can use this form below. Anyway, nobody's going to reply — our clock stopped long, long time ago...</p>
+
+          <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY">
+
+          <input type="hidden" name="recipient" value="ilkimonrcn@gmail.com">
+
+          <input type="hidden" name="subject" value="Akashic Oracle Contact Form">
+
+          <input type="checkbox" name="botcheck" class="sr-only" style="display:none" tabindex="-1" autocomplete="off">
+
+          <div class="form-group"><label class="form-label" for="formName" data-i18n="form_name">Your Name</label><input class="form-input" id="formName" name="name" type="text" required aria-required="true" autocomplete="name"></div>
+
+          <div class="form-group"><label class="form-label" for="formEmail" data-i18n="form_email">Your Email</label><input class="form-input" id="formEmail" name="email" type="email" required aria-required="true" autocomplete="email" pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}" title="Please enter a valid email address"></div>
+
+          <div class="form-group"><label class="form-label" for="formMessage" data-i18n="form_message">Your Message</label><textarea class="form-textarea" id="formMessage" name="message" required aria-required="true"></textarea></div>
+
+          <button class="form-submit" type="submit" data-i18n="form_submit">&#10022; Send Message</button>
+
+          <div class="form-status" id="formStatus" role="alert" aria-live="polite"></div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</main>
+
+<footer role="contentinfo">
+
+  <div class="container">
+
+    <div class="footer-bottom">
+
+      <p>&copy; 2026 Akashic Oracle. <span data-i18n="footer_rights">All energy interactions belongs to the void.</span></p>
+
+      <p data-i18n="footer_karma">The creator of this site accepts no energy karma; all energy interactions are transferred to the interacting users.</p>
+
+    </div>
+
+  </div>
+
+</footer>
+<script src="i18n.js"></script>
+<script src="init.js"></script>
+<script src="songs.js"></script>
+<script src="youtube.js"></script>
+<script src="oracle.js"></script>
+</body>
+</html>
